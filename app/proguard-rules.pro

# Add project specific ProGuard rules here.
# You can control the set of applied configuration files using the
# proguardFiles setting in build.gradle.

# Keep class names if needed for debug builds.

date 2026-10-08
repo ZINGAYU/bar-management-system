@@ -1,0 +1,63 @@
+package com.zingayu.barmanagement.data
+
+object BarRepository {
+    val products = mutableListOf(
+        Product("p1", "Crown Royal", "Whisky", 12, 28.0, 42.0, "Urban Distillers"),
+        Product("p2", "Heineken", "Beer", 48, 3.2, 7.5, "Harbor Distributors"),
+        Product("p3", "Merlot", "Wine", 16, 12.5, 24.0, "Vine Hill Imports"),
+        Product("p4", "Smirnoff Vodka", "Spirits", 10, 18.0, 29.0, "North Valley Supply"),
+        Product("p5", "Coca Cola", "Mixers", 30, 1.8, 4.5, "City Beverage Co."),
+        Product("p6", "Cashew Nuts", "Snacks", 24, 2.5, 6.0, "Quick Bites"),
+        Product("p7", "Jack Daniel's", "Whisky", 8, 26.0, 38.0, "Urban Distillers"),
+        Product("p8", "Red Bull", "Energy", 20, 2.2, 5.5, "Drift Supply")
+    )
+
+    val orders = mutableListOf(
+        BarOrder(
+            orderId = "O-1021",
+            customer = "A. Smith",
+            table = "Table 4",
+            status = "Preparing",
+            items = listOf(
+                OrderItem("Heineken", 2, 7.5),
+                OrderItem("Crown Royal", 1, 42.0)
+            ),
+            total = 57.0
+        ),
+        BarOrder(
+            orderId = "O-1022",
+            customer = "Group 8",
+            table = "Bar Counter",
+            status = "Served",
+            items = listOf(
+                OrderItem("Merlot", 3, 24.0),
+                OrderItem("Coca Cola", 2, 4.5)
+            ),
+            total = 79.5
+        )
+    )
+
+    val sales = mutableListOf(
+        SaleRecord("Heineken", 15.0, "09:10 AM"),
+        SaleRecord("Crown Royal", 42.0, "10:25 AM"),
+        SaleRecord("Merlot", 24.0, "11:40 AM"),
+        SaleRecord("Smirnoff Vodka", 29.0, "01:15 PM"),
+        SaleRecord("Red Bull", 5.5, "02:45 PM")
+    )
+
+    fun addStock(productId: String, quantity: Int) {
+        val index = products.indexOfFirst { it.id == productId }
+        if (index >= 0) {
+            val product = products[index]
+            products[index] = product.copy(stock = product.stock + quantity)
+        }
+    }
+
+    fun reduceStock(productId: String, quantity: Int) {
+        val index = products.indexOfFirst { it.id == productId }
+        if (index >= 0) {
+            val product = products[index]
+            products[index] = product.copy(stock = maxOf(0, product.stock - quantity))
+        }
+    }
+}
